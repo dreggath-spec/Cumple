@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Museo de Luz - Para Thais</title>
+<style>
+body {
+  margin: 0;
+  background: #0a0a0a;
+  color: #eee;
+  font-family: 'Georgia', serif;
+  overflow: hidden;
+}
+#game {
+  display: block;
+  margin: auto;
+  image-rendering: pixelated;
+}
+#startScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+  overflow: hidden;
+}
+#startScreen::before {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background-image: 
+    radial-gradient(2px 2px at 20% 30%, white, transparent),
+    radial-gradient(2px 2px at 60% 70%, white, transparent),
+    radial-gradient(1px 1px at 50% 50%, white, transparent),
+    radial-gradient(1px 1px at 80% 10%, white, transparent),
+    radial-gradient(2px 2px at 90% 60%, white, transparent),
+    radial-gradient(1px 1px at 33% 80%, white, transparent),
+    radial-gradient(1px 1px at 15% 60%, white, transparent);
+  background-size: 200px 200px, 300px 300px, 250px 250px, 350px 350px, 180px 180px, 220px 220px, 280px 280px;
+  animation: twinkle 100s linear infinite;
+  opacity: 0.8;
+}
+@keyframes twinkle {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+#startScreen h1 {
+  font-size: 48px;
+  color: #ffd700;
+  text-shadow: 0 0 30px rgba(255,215,0,0.8);
+  margin-bottom: 30px;
+  animation: float 3s ease-in-out infinite;
+  position: relative;
+  z-index: 2;
+}
+#startScreen p {
+  font-size: 24px;
+  color: #fff;
+  font-style: italic;
+  margin: 20px 0;
+  max-width: 600px;
+  text-align: center;
+  line-height: 1.8;
+  position: relative;
+  z-index: 2;
+}
+#startButton {
+  margin-top: 40px;
+  padding: 20px 50px;
+  font-size: 24px;
+  font-family: 'Georgia', serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #ffd700;
+  border: 3px solid #ffd700;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+  position: relative;
+  z-index: 2;
+}
+#startButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 50px rgba(102, 126, 234, 0.8);
+}
+#message {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: linear-gradient(to top, rgba(26,26,46,0.95), rgba(26,26,46,0.85));
+  padding: 20px;
+  text-align: center;
+  font-size: 16px;
+  font-style: italic;
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255,215,0,0.3);
+  border-top: 2px solid rgba(255,215,0,0.3);
+  min-height: 60px;
+}
+#message.secret {
+  color: #ff69b4;
+  text-shadow: 0 0 15px rgba(255,105,180,0.6);
+  animation: secretPulse 2s ease-in-out;
+}
+@keyframes secretPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; transform: scale(1.02); }
+}
+#title {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 28px;
+  color: #ffd700;
+  text-shadow: 0 0 20px rgba(255,215,0,0.5);
+  font-weight: bold;
+  letter-spacing: 3px;
+  z-index: 100;
+}
+#controls {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  color: #aaa;
+  text-align: center;
+  z-index: 100;
+}
+#finalMessage {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 50px 70px;
+  border-radius: 20px;
+  box-shadow: 0 0 60px rgba(102, 126, 234, 0.8);
+  text-align: center;
+  display: none;
+  z-index: 200;
+  border: 4px solid #ffd700;
+}
+#finalMessage h1 {
+  font-size: 42px;
+  color: #ffd700;
+  margin: 0 0 25px 0;
+  text-shadow: 0 0 25px rgba(255,215,0,0.9);
+  animation: float 3s ease-in-out infinite;
+}
+#finalMessage p {
+  font-size: 26px;
+  color: #fff;
+  margin: 18px 0;
+  line-height: 1.7;
+}
+#finalMessage .heart {
+  font-size: 52px;
+  animation: heartbeat 1.5s infinite;
+  margin: 20px 0;
+}
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ===== CONTROLES TÁCTILES (solo se muestran en celular/tablet) ===== */
+#touchControls {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 110px;
+  padding: 0 18px;
+  justify-content: space-between;
+  align-items: flex-end;
+  pointer-events: none;
+  z-index: 150;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+#dpad {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  pointer-events: none;
+}
+.tbtn {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  border: 2px solid rgba(255,215,0,0.7);
+  background: rgba(26,26,46,0.6);
+  color: #ffd700;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.tbtn.active {
+  background: rgba(255,215,0,0.45);
+}
+#btnUp    { left: 50px; top: 0; }
+#btnLeft  { left: 0;    top: 50px; }
+#btnRight { left: 100px; top: 50px; }
+#btnDown  { left: 50px; top: 100px; }
+#btnZ {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  font-size: 30px;
+  font-family: 'Georgia', serif;
+  font-weight: bold;
+  border-color: #ff69b4;
+  color: #ff69b4;
+  background: rgba(26,26,46,0.6);
+  margin-bottom: 35px;
+}
+#btnZ.active {
+  background: rgba(255,105,180,0.45);
+}
+
+/* Ajustes para pantallas táctiles: el juego se escala para caber en el celular */
+@media (pointer: coarse) {
+  #game {
+    width: min(100vw, calc(100vh * 4 / 3));
+    height: auto;
+  }
+  #controls { display: none !important; }
+  #title { font-size: 18px; top: 8px; letter-spacing: 2px; }
+  #message { font-size: 14px; padding: 12px; min-height: 44px; box-sizing: border-box; }
+  #touchControls { bottom: 90px; }
+  #startScreen h1 { font-size: 34px; text-align: center; }
+  #startScreen p { font-size: 18px; padding: 0 20px; }
+  #finalMessage {
+    padding: 25px 20px;
+    width: 82vw;
+    box-sizing: border-box;
+  }
+  #finalMessage h1 { font-size: 28px; }
+  #finalMessage p { font-size: 18px; }
+  #finalMessage .heart { font-size: 40px; }
+  #finalMessage div[style] { font-size: 16px !important; }
+}
+</style>
+</head>
+<body>
+<div id="startScreen">
+  <h1>✨ Museo de Luz ✨</h1>
+  <p>Este juego lo hice con mucho cariño para ti</p>
+  <p style="font-size: 20px; color: #ffd700;">Para Thais 💖</p>
+  <button id="startButton">Comenzar</button>
+</div>
+<div id="title" style="display:none;">✨ MUSEO DE LUZ ✨</div>
+<div id="controls" style="display:none;">WASD para caminar | Z para leer pinturas cercanas</div>
+<canvas id="game" width="800" height="600"></canvas>
+<div id="message" style="display:none;">Bienvenida al Museo de Luz. Explora las pinturas que celebran la esperanza y la belleza de la vida.</div>
+<div id="finalMessage">
+  <h1>🎉 ¡FELIZ CUMPLEAÑOS! 🎉</h1>
+  <div class="heart">💖</div>
+  <p><strong>Nunca lo olvides:</strong></p>
+  <p>Eres especial.</p>
+  <p>Se te quiere mucho, Thais.</p>
+  <div style="margin-top: 35px; font-size: 22px; color: #ffd700;">
+    ✨ Ojala no te mueras este año ni los otros ✨
+  </div>
+</div>
+
+<!-- Controles táctiles -->
+<div id="touchControls">
+  <div id="dpad">
+    <div class="tbtn" id="btnUp" data-key="w">▲</div>
+    <div class="tbtn" id="btnLeft" data-key="a">◀</div>
+    <div class="tbtn" id="btnRight" data-key="d">▶</div>
+    <div class="tbtn" id="btnDown" data-key="s">▼</div>
+  </div>
+  <div class="tbtn" id="btnZ">Z</div>
+</div>
+
+<script>
+const c = document.getElementById('game');
+const ctx = c.getContext('2d');
+const T = 32;
+
+let gameStarted = false;
+
+document.getElementById('startButton').addEventListener('click', () => {
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('title').style.display = 'block';
+  document.getElementById('controls').style.display = 'block';
+  document.getElementById('message').style.display = 'block';
+  gameStarted = true;
+});
+
+// Proporciones unificadas del gato
+const catSize = {
+  headRadius: T * 0.45,
+  bodyWidth: T * 0.65,
+  bodyHeight: T * 0.5,
+  legWidth: T * 0.15,
+  legHeight: T * 0.4,
+  tailWidth: T * 0.12,
+  earSize: T * 0.28
+};
+
+const p = { 
+  x: 5*T*3, 
+  y: 3*T*3, 
+  s: T, 
+  spd: 2.5, 
+  d: 0, 
+  wf: 0, 
+  wt: 0, 
+  blinkTimer: 0, 
+  blinking: false,
+  stillTimer: 0,
+  lastX: 0,
+  lastY: 0,
+  paintingsRead: 0
+};
+const cam = { x: 0, y: 0 };
+let doorOpen = false;
+
+const WORLD_W = 15;
+const WORLD_H = 40;
+
+const walls = [];
+for (let i = 0; i < WORLD_W; i++) {
+  walls.push({ x: i*T*3, y: 0, w: T*3, h: T*3 });
+  walls.push({ x: i*T*3, y: (WORLD_H-1)*T*3, w: T*3, h: T*3 });
+}
+for (let j = 1; j < WORLD_H-1; j++) {
+  walls.push({ x: 0, y: j*T*3, w: T*3, h: T*3 });
+  walls.push({ x: (WORLD_W-1)*T*3, y: j*T*3, w: T*3, h: T*3 });
+}
+
+const msgs = ["Yo siempre estaré para ti.","Por más que tu mundo se caiga siempre tendrás mi apoyo.","Tú no eres inútil ni tonta, ni débil, eres una chica increíble.","No tienes que pasar por esto sola, de verdad.","Estoy aquí para ti, incluso en los días malos.","Puedes contar conmigo cuando lo necesites.","No importa lo que pase, no me voy a ir.","Si hoy no puedes con todo, está bien.","No te voy a juzgar por cómo te sientes.","Aunque no lo veas ahora, vales mucho.","Estoy orgulloso de ti, incluso cuando dudas de ti misma.","No tienes que ser fuerte todo el tiempo.","Si te caes, aquí estoy.","Puedes hablar conmigo sin miedo.","No eres una carga para nadie.","Tus sentimientos importan.","No estás exagerando, estás siendo humana.","Estoy de tu lado.","No tienes que fingir que todo está bien conmigo.","Pase lo que pase, no estás sola.","Sé que no es fácil, pero no estás fallando.","Estoy aquí para escucharte, no para corregirte.","No te menosprecies, no te lo mereces.","Aunque hoy duela, esto no te define.","No tienes que demostrar nada para que te apoyen.","Yo sí veo el esfuerzo que haces.","Si hoy estás cansada, descansa, no te rindas.","No te compares con nadie.","Eres más fuerte de lo que crees.","No te voy a dejar sola cuando estés mal.","Puedes confiar en mí.","No pasa nada si hoy no tienes ganas de nada.","Estoy aquí, incluso en silencio.","No te castigues tanto.","Lo que sientes es válido.","Estoy contigo en esto.","No tienes que cargar con todo sola.","No eres débil por sentir así.","Aquí tienes un lugar seguro.","Está bien pedir ayuda.","Tú importas, más de lo que crees.","No tienes que ser perfecta.","Estoy aquí porque quiero estarlo.","No te rindas contigo misma.","Confía un poco más en ti.","Tus errores no te definen.","No te juzgo.","Respira, no todo se resuelve hoy.","Eres importante.","Pase lo que pase, puedes contar conmigo.","Si algún día sientes que todo se vuelve demasiado pesado, recuerda que no tienes que cargarlo sola. Yo quiero estar a tu lado.","No necesitas ser fuerte todo el tiempo. Hasta los personajes que admiramos necesitan a alguien que los abrace cuando ya no pueden más.","Si tu vida fuera un anime, yo elegiría quedarme contigo incluso en los capítulos más difíciles.","No importa cuántas veces sientas que perdiste una batalla, para mí sigues siendo alguien increíble.","Quiero ser esa persona a la que puedas acudir cuando tu mundo se sienta un poquito más gris.","Aunque hoy no tengas energía ni para sonreír, está bien. Me basta con saber que sigues aquí.","No necesitas convertirte en otra persona para que te quiera. Me gusta quién eres ahora.","Si alguna vez dudas de ti, déjame recordarte todas esas cosas bonitas que tú no alcanzas a ver.","Hasta los protagonistas tienen episodios donde lloran, se cansan y quieren rendirse. Eso no los hace menos fuertes, y a ti tampoco.","No quiero que enfrentes tus monstruos sola. Si me dejas, quiero acompañarte.","Quizás no pueda solucionar todo lo que te pasa, pero sí puedo quedarme contigo mientras pasa.","Para mí no eres un personaje secundario. Eres alguien demasiado importante.","Si hoy necesitas descansar del mundo, puedes hacerlo. No tienes que demostrarme nada.","A veces quisiera que pudieras verte con mis ojos para que entendieras lo especial que eres.","No importa si tu día fue horrible. Puedes venir conmigo tal como estás.","No tienes que fingir una sonrisa para hacerme sentir bien. También quiero conocerte en tus días tristes.","Si alguna vez sientes que perdiste el rumbo, podemos encontrarlo juntos.","Tu historia todavía tiene demasiadas cosas bonitas por vivir, y me gustaría estar presente en muchas de ellas.","No necesitas ningún poder especial para importarme. Siendo tú ya es suficiente.","Cuando tengas miedo, no tienes que esconderlo. Puedes tomar mi mano y seguir poquito a poquito.","Prometo no mirarte diferente por tus días malos.","Aunque sientas que todos avanzan más rápido que tú, yo puedo caminar a tu ritmo.","No quiero que seas perfecta. Quiero que puedas ser tú sin miedo cuando estés conmigo.","Si tu corazón necesita un lugar donde descansar, quiero que sepas que conmigo siempre tendrás uno.","Hay días que parecen capítulos que nunca terminan, pero no tienes que atravesarlos sin compañía.","Incluso cuando tú no creas mucho en ti, déjame creer un poquito por los dos.","No tienes que salvar a nadie hoy. Hoy también puedes dejar que alguien cuide de ti.","Si te caes diez veces, no me importa. Las diez veces voy a querer ayudarte a levantarte.","No quiero aparecer solamente en tus capítulos felices. También quiero estar cuando las cosas se pongan difíciles.","A veces el verdadero poder no está en seguir luchando, sino en permitirte descansar y dejarte cuidar.","Puedes contarme lo que sientes aunque no sepas explicarlo bien. Voy a intentar entenderte.","Cuando pienses que no eres suficiente, recuerda que para algunas personas tu simple existencia ya significa muchísimo.","No tienes que esconder tus heridas conmigo. No voy a pensar menos de ti por tenerlas.","Si pudiera entrar en esos pensamientos que te hacen daño, les recordaría uno por uno todo lo bueno que tienes.","No sé cómo terminarán todos nuestros capítulos, pero mientras pueda estar aquí, quiero hacerte sentir acompañada.","Incluso los personajes más fuertes encontraron personas que los ayudaron a continuar. Tú también mereces tenerlas.","Si algún día quieres llorar sin explicar nada, puedes hacerlo conmigo.","Me gusta tu forma de ser, incluso esas partes que tú todavía estás aprendiendo a querer.","No tienes que ganar todas tus batallas. Para mí ya significa mucho que sigas intentándolo.","Si el mundo alguna vez se siente demasiado ruidoso, ven conmigo. Podemos quedarnos en silencio.","Quiero que recuerdes que no eres una molestia por necesitar cariño, atención o compañía.","Tu historia no necesita ser perfecta para ser bonita.","Aunque hoy sea uno de esos episodios tristes, no significa que todos los siguientes tengan que ser iguales.","No me importa si avanzamos rápido o despacio. Mientras estés bien, podemos ir a tu ritmo.","No quiero ser alguien que solo te diga que seas fuerte. También quiero decirte que está bien sentirte cansada.","Si pudieras ver todo lo bueno que veo en ti, quizás serías un poquito más amable contigo misma.","Puede que no tenga ninguna técnica secreta para quitarte los problemas, pero sí tengo tiempo para escucharte.","Cuando sientas que nadie entiende lo que pasa dentro de ti, puedes intentar contármelo. Quiero comprenderte.","No estás obligada a tener siempre un final feliz. También puedes tener días malos y seguir siendo una persona maravillosa.","Si nuestra vida tuviera opening y ending, espero que en muchos de esos capítulos todavía aparezcamos acompañándonos."];
+const path = [
+  [5,3],[6,3],[7,3],[8,3],[9,3],[10,3],
+  [10,4],[10,5],[10,6],[10,7],
+  [9,7],[8,7],[7,7],[6,7],[5,7],[4,7],
+  [4,8],[4,9],[4,10],[4,11],
+  [5,11],[6,11],[7,11],[8,11],[9,11],[10,11],
+  [10,12],[10,13],[10,14],[10,15],
+  [9,15],[8,15],[7,15],[6,15],[5,15],[4,15],
+  [4,16],[4,17],[4,18],[4,19],
+  [5,19],[6,19],[7,19],[8,19],[9,19],[10,19],
+  [10,20],[10,21],[10,22],[10,23],
+  [9,23],[8,23],[7,23],[6,23],[5,23],[4,23],
+  [4,24],[4,25],[4,26],[4,27],
+  [5,27],[6,27],[7,27],[8,27],[9,27],[10,27],
+  [10,28],[10,29],[10,30],[10,31],
+  [9,31],[8,31],[7,31],[6,31],[5,31],[4,31],
+  [4,32],[4,33],[4,34],[4,35],
+  [5,35],[6,35],[7,35],[8,35],[9,35],[10,35],
+  [11,35]
+];
+
+const pts = path.slice(0, msgs.length).map((pt, i) => ({
+  x: pt[0]*T*3,
+  y: pt[1]*T*3,
+  w: T*2.5,
+  h: T*2.5,
+  t: msgs[i],
+  c: `hsl(${(i*12)%360}, 75%, 55%)`,
+  g: Math.random()*Math.PI*2
+}));
+
+const door = { x: 11*T*3+T, y: 35*T*3, w: T*2.5, h: T*3.5, o: false };
+
+const decs = [
+  {t:'plant',x:3*T*3,y:5*T*3,id:'plant1'},{t:'plant',x:12*T*3,y:5*T*3,id:'plant2'},
+  {t:'flower',x:3*T*3,y:9*T*3},{t:'flower',x:12*T*3,y:9*T*3},
+  {t:'bench',x:11*T*3,y:13*T*3},
+  {t:'plant',x:3*T*3,y:17*T*3,id:'plant3'},{t:'plant',x:12*T*3,y:17*T*3,id:'plant4'},
+  {t:'flower',x:3*T*3,y:21*T*3},{t:'flower',x:12*T*3,y:21*T*3},
+  {t:'bench',x:11*T*3,y:25*T*3},
+  {t:'plant',x:3*T*3,y:29*T*3,id:'plant5'},{t:'plant',x:12*T*3,y:29*T*3,id:'plant6'},
+  {t:'flower',x:3*T*3,y:33*T*3},{t:'flower',x:12*T*3,y:33*T*3},
+  {t:'candle',x:2*T*3,y:7*T*3,id:'candle1'},{t:'candle',x:12.5*T*3,y:7*T*3},
+  {t:'candle',x:2*T*3,y:14*T*3},{t:'candle',x:12.5*T*3,y:14*T*3},
+  {t:'candle',x:2*T*3,y:21*T*3},{t:'candle',x:12.5*T*3,y:21*T*3},
+  {t:'candle',x:2*T*3,y:28*T*3},{t:'candle',x:12.5*T*3,y:28*T*3},
+  {t:'star',x:2.5*T*3,y:2*T*3,id:'star1'},{t:'star',x:12*T*3,y:2*T*3,id:'star3'},
+  {t:'star',x:7.5*T*3,y:1.5*T*3,id:'star2'}
+];
+
+// Sistema de Easter Eggs
+const easterEggs = {
+  candle1: { found: false, stillTime: 0, message: '✨ La llama susurra: "En la quietud encuentras paz."' },
+  stars: { found: false, order: [], message: '⭐ Las estrellas se alinean: "Bailaste con la luz del cielo."' },
+  plant: { found: false, interactCount: {}, message: '🌿 La planta florece: "Cuidaste lo que otros ignoraron."' },
+  return: { found: false, checked: false, message: '🔄 El eco del inicio: "Volviste donde todo comenzó."' },
+  doorWait: { found: false, waitTime: 0, message: '🚪 El umbral te conoce: "La paciencia abre todos los caminos."' }
+};
+
+const keys = {};
+window.addEventListener('keydown', e => {
+  if (!gameStarted) return;
+  keys[e.key.toLowerCase()] = true;
+  if (e.key.toLowerCase() === 'z') check();
+});
+window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+
+function showSecretMessage(msg) {
+  const msgEl = document.getElementById('message');
+  msgEl.classList.add('secret');
+  msgEl.innerText = '🎁 ' + msg;
+  setTimeout(() => msgEl.classList.remove('secret'), 3000);
+}
+
+function check() {
+  const dd = Math.hypot(p.x-(door.x+door.w/2), p.y-(door.y+door.h/2));
+  if (dd < 100 && !door.o) {
+    door.o = true;
+    doorOpen = true;
+    document.getElementById('finalMessage').style.display = 'block';
+    return;
+  }
+  
+  // Easter Egg 3: Planta (interactuar 3 veces con la misma)
+  if (!easterEggs.plant.found) {
+    decs.forEach(d => {
+      if (d.t === 'plant' && d.id) {
+        const dist = Math.hypot(p.x-(d.x+20), p.y-(d.y+30));
+        if (dist < 80) {
+          easterEggs.plant.interactCount[d.id] = (easterEggs.plant.interactCount[d.id] || 0) + 1;
+          if (easterEggs.plant.interactCount[d.id] >= 3) {
+            easterEggs.plant.found = true;
+            showSecretMessage(easterEggs.plant.message);
+            return;
+          }
+        }
+      }
+    });
+  }
+  
+  let found = false;
+  pts.forEach(pt => {
+    const d = Math.hypot(p.x-(pt.x+pt.w/2), p.y-(pt.y+pt.h/2));
+    if (d < 100) {
+      document.getElementById('message').innerText = pt.t;
+      p.paintingsRead++;
+      found = true;
+    }
+  });
+  
+  if (!found && !doorOpen) {
+    document.getElementById('message').innerText = 'No hay nada cerca. Acércate a una pintura o a la puerta.';
+  }
+}
+
+function collide(nx, ny) {
+  const pb = { x: nx-T/2, y: ny-T/2, w: T, h: T };
+  for (let w of walls) {
+    if (pb.x < w.x+w.w && pb.x+pb.w > w.x && pb.y < w.y+w.h && pb.y+pb.h > w.y) return true;
+  }
+  return false;
+}
+
+function update() {
+  if (!gameStarted) return;
+  
+  let nx = p.x, ny = p.y, mov = false;
+  if (keys['w']) { ny -= p.spd; p.d = 2; mov = true; }
+  if (keys['s']) { ny += p.spd; p.d = 0; mov = true; }
+  if (keys['a']) { nx -= p.spd; p.d = 3; mov = true; }
+  if (keys['d']) { nx += p.spd; p.d = 1; mov = true; }
+  
+  if (!collide(nx, ny)) { p.x = nx; p.y = ny; }
+  
+  if (mov) {
+    p.wt++;
+    if (p.wt > 8) { p.wf = (p.wf+1)%2; p.wt = 0; }
+    p.stillTimer = 0;
+  } else {
+    p.stillTimer++;
+  }
+  
+  // Easter Egg 1: Quedarse quieto frente a primera vela 5s
+  if (!easterEggs.candle1.found) {
+    const candle = decs.find(d => d.id === 'candle1');
+    if (candle) {
+      const dist = Math.hypot(p.x-(candle.x+14), p.y-(candle.y+25));
+      if (dist < 70 && p.stillTimer > 0) {
+        easterEggs.candle1.stillTime++;
+        if (easterEggs.candle1.stillTime > 300) {
+          easterEggs.candle1.found = true;
+          showSecretMessage(easterEggs.candle1.message);
+        }
+      } else {
+        easterEggs.candle1.stillTime = 0;
+      }
+    }
+  }
+  
+  // Easter Egg 2: Tocar estrellas en orden (izq, centro, der)
+  if (!easterEggs.stars.found) {
+    decs.forEach(d => {
+      if (d.t === 'star' && d.id) {
+        const dist = Math.hypot(p.x-(d.x+20), p.y-(d.y+20));
+        if (dist < 60 && !easterEggs.stars.order.includes(d.id)) {
+          easterEggs.stars.order.push(d.id);
+          if (easterEggs.stars.order.length === 3) {
+            if (easterEggs.stars.order[0] === 'star1' && 
+                easterEggs.stars.order[1] === 'star2' && 
+                easterEggs.stars.order[2] === 'star3') {
+              easterEggs.stars.found = true;
+              showSecretMessage(easterEggs.stars.message);
+            }
+          }
+        }
+      }
+    });
+  }
+  
+  // Easter Egg 4: Volver al inicio después de leer 10+ pinturas
+  if (!easterEggs.return.found && !easterEggs.return.checked && p.paintingsRead >= 10) {
+    const startX = 5*T*3, startY = 3*T*3;
+    const dist = Math.hypot(p.x-startX, p.y-startY);
+    if (dist < 150) {
+      easterEggs.return.found = true;
+      easterEggs.return.checked = true;
+      showSecretMessage(easterEggs.return.message);
+    }
+  }
+  
+  // Easter Egg 5: Quedarse frente a puerta cerrada 8s
+  if (!easterEggs.doorWait.found && !door.o) {
+    const dd = Math.hypot(p.x-(door.x+door.w/2), p.y-(door.y+door.h/2));
+    if (dd < 120 && p.stillTimer > 0) {
+      easterEggs.doorWait.waitTime++;
+      if (easterEggs.doorWait.waitTime > 480) {
+        easterEggs.doorWait.found = true;
+        showSecretMessage(easterEggs.doorWait.message);
+      }
+    } else {
+      easterEggs.doorWait.waitTime = 0;
+    }
+  }
+  
+  // Pestañeo sutil
+  p.blinkTimer++;
+  if (p.blinkTimer > 240) {
+    p.blinking = true;
+  }
+  if (p.blinkTimer > 246) {
+    p.blinking = false;
+    p.blinkTimer = 0;
+  }
+  
+  cam.x = p.x - c.width/2;
+  cam.y = p.y - c.height/2;
+}
+
+function drawDec(t, x, y) {
+  const sx = x - cam.x, sy = y - cam.y;
+  if (t === 'plant') {
+    ctx.fillStyle = '#8B4513';
+    ctx.fillRect(sx, sy+20, 30, 20);
+    ctx.fillStyle = '#2d5016';
+    ctx.beginPath(); ctx.arc(sx+15, sy+15, 15, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(sx+5, sy+20, 12, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(sx+25, sy+20, 12, 0, Math.PI*2); ctx.fill();
+  } else if (t === 'flower') {
+    ctx.fillStyle = '#2d5016';
+    ctx.fillRect(sx+13, sy+10, 4, 25);
+    ctx.fillStyle = '#ff69b4';
+    for (let i = 0; i < 6; i++) {
+      const a = (i/6)*Math.PI*2;
+      ctx.beginPath();
+      ctx.arc(sx+15+Math.cos(a)*8, sy+10+Math.sin(a)*8, 5, 0, Math.PI*2);
+      ctx.fill();
+    }
+    ctx.fillStyle = '#ffd700';
+    ctx.beginPath(); ctx.arc(sx+15, sy+10, 4, 0, Math.PI*2); ctx.fill();
+  } else if (t === 'bench') {
+    ctx.fillStyle = '#654321';
+    ctx.fillRect(sx, sy+20, 50, 10);
+    ctx.fillRect(sx+5, sy+30, 5, 15);
+    ctx.fillRect(sx+40, sy+30, 5, 15);
+  } else if (t === 'candle') {
+    ctx.fillStyle = '#8B7355';
+    ctx.fillRect(sx+8, sy+15, 12, 20);
+    ctx.fillStyle = '#ffa500';
+    ctx.beginPath(); ctx.arc(sx+14, sy+12, 5, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#ffff00';
+    ctx.beginPath(); ctx.arc(sx+14, sy+10, 3, 0, Math.PI*2); ctx.fill();
+  } else if (t === 'star') {
+    ctx.fillStyle = '#ffd700';
+    ctx.save();
+    ctx.translate(sx+20, sy+20);
+    ctx.beginPath();
+    for (let i = 0; i < 5; i++) {
+      ctx.lineTo(Math.cos((i*4*Math.PI)/5)*12, Math.sin((i*4*Math.PI)/5)*12);
+    }
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+// Gato rediseñado con proporciones unificadas
+function drawP(x, y) {
+  ctx.save();
+  
+  // Sombra
+  ctx.fillStyle = 'rgba(0,0,0,0.3)';
+  ctx.beginPath(); 
+  ctx.ellipse(x, y+T*0.55, T*0.4, T*0.12, 0, 0, Math.PI*2); 
+  ctx.fill();
+  
+  const cs = catSize;
+  const legOff = p.wf === 1 ? T*0.08 : 0;
+  const flipX = (p.d === 1 || p.d === 3) ? (p.d === 3 ? -1 : 1) : 1;
+  
+  if (p.d === 2) {
+    // VISTA TRASERA (arriba)
+    drawCatBack(x, y, cs);
+  } else if (p.d === 0) {
+    // VISTA FRONTAL (abajo)
+    ctx.translate(x, y);
+    ctx.scale(flipX, 1);
+    ctx.translate(-x, -y);
+    drawCatFront(x, y, cs, legOff);
+  } else {
+    // VISTA LATERAL (izquierda/derecha)
+    ctx.translate(x, y);
+    ctx.scale(flipX, 1);
+    ctx.translate(-x, -y);
+    drawCatSide(x, y, cs, legOff);
+  }
+  
+  ctx.restore();
+}
+
+function drawCatBack(x, y, cs) {
+  const bodyY = y + T*0.05;
+  
+  // Cuerpo compacto
+  ctx.fillStyle = '#1a1a1a';
+  ctx.beginPath();
+  ctx.ellipse(x, bodyY, cs.bodyWidth, cs.bodyHeight, 0, 0, Math.PI*2);
+  ctx.fill();
+  
+  // Patas traseras visibles
+  ctx.fillRect(x - cs.bodyWidth*0.5, bodyY + cs.bodyHeight*0.6, cs.legWidth, cs.legHeight);
+  ctx.fillRect(x + cs.bodyWidth*0.35, bodyY + cs.bodyHeight*0.6, cs.legWidth, cs.legHeight);
+  
+  // Cola levantada (expresiva)
+  ctx.strokeStyle = '#1a1a1a';
+  ctx.lineWidth = cs.tailWidth;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(x, bodyY + cs.bodyHeight*0.5);
+  ctx.quadraticCurveTo(x - T*0.15, bodyY - T*0.25, x - T*0.22, bodyY - T*0.55);
+  ctx.stroke();
+  
+  // Cabeza desde atrás
+  const headY = y - T*0.38;
+  ctx.fillStyle = '#1a1a1a';
+  ctx.beginPath(); 
+  ctx.arc(x, headY, cs.headRadius, 0, Math.PI*2); 
+  ctx.fill();
+  
+  // Orejas grandes y triangulares
+  ctx.fillStyle = '#1a1a1a';
+  ctx.beginPath();
+  ctx.moveTo(x - cs.earSize*1.3, headY + cs.headRadius*0.2);
+  ctx.lineTo(x - cs.earSize*0.4, headY - cs.headRadius*0.3);
+  ctx.lineTo(x - cs.earSize*0.6, headY + cs.headRadius*0.6);
+  ctx.closePath();
+  ctx.fill();
+  
+  ctx.beginPath();
+  ctx.moveTo(x + cs.earSize*1.3, headY + cs.headRadius*0.2);
+  ctx.lineTo(x + cs.earSize*0.4, headY - cs.headRadius*0.3);
+  ctx.lineTo(x + cs.earSize*0.6, headY + cs.headRadius*0.6);
+  ctx.closePath();
+  ctx.fill();
+  
+  // Interior orejas rosa
+  ctx.fillStyle = '#ff69b4';
+  ctx.beginPath();
+  ctx.moveTo(x - cs.earSize*1.1, headY + cs.headRadius*0.3);
+  ctx.lineTo(x - cs.earSize*0.55, headY);
+  ctx.lineTo(x - cs.earSize*0.7, headY + cs.headRadius*0.5);
+  ctx.closePath();
+  ctx.fill();
+  
+  ctx.beginPath();
+  ctx.moveTo(x + cs.earSize*1.1, headY + cs.headRadius*0.3);
+  ctx.lineTo(x + cs.earSize*0.55, headY);
+  ctx.lineTo(x + cs.earSize*0.7, headY + cs.headRadius*0.5);
+  ctx.closePath();
+  ctx.fill();
+}
+
+function drawCatFront(x, y, cs, legOff) {
+  const bodyY = y + T*0.08;
+  
+  // Cuerpo ovalado
+  ctx.fillStyle = '#1a1a1a';
+  ctx.beginPath();
+  ctx.ellipse(x, bodyY, cs.bodyWidth, cs.bodyHeight*1.1, 0, 0, Math.PI*2);
+  ctx.fill();
+  
+  // Patas traseras
+  ctx.fillRect(x - cs.bodyWidth*0.6, bodyY + cs.bodyHeight*0.7, cs.legWidth, cs.legHeight + legOff);
+  ctx.fillRect(x + cs.bodyWidth*0.45, bodyY + cs.bodyHeight*0.7, cs.legWidth, cs.legHeight - legOff);
+  
+  // Cola curvada lateral
+  ctx.strokeStyle = '#1a1a1a';
+  ctx.lineWidth = cs.tailWidth;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(x + cs.bodyWidth*0.9, bodyY);
+  ctx.quadraticCurveTo(x + T*0.65, bodyY - T*0.15, x + T*0.6, bodyY + T*0.12);
+  ctx.stroke();
+  
+  // Patas delanteras
+  ctx.fillStyle = '#1a1a1a';
+  ctx.fillRect(x - cs.bodyWidth*0.25, bodyY + cs.bodyHeight*0.3, cs.legWidth, cs.legHeight);
+  ctx.fillRect(x + cs.bodyWidth*0.1, bodyY + cs.bodyHeight*0.3, cs.legWidth, cs.legHeight);
+  
+  // Cabeza más grande (cute)
+  const headY = y - T*0.28;
+  ctx.fillStyle = '#1a1a1a';
+  ctx.beginPath(); 
+  ctx.arc(x, headY, cs.headRadius, 0, Math.PI*2); 
+  ctx.fill();
+  
+  // Orejas triangulares grandes
+  ctx.fillStyle = '#1a1a1a';
+  ctx.beginPath();
+  ctx.moveTo(x - cs.earSize*1.2, headY);
+  ctx.lineTo(x - cs.earSize*0.5, headY - cs.headRadius);
+  ctx.lineTo(x - cs.earSize*0.3, headY - cs.headRadius*0.3);
+  ctx.closePath();
+  ctx.fill();
+  
+  ctx.beginPath();
+  ctx.moveTo(x + cs.earSize*1.2, headY);
+  ctx.lineTo(x + cs.earSize*0.5, headY - cs.headRadius);
+  ctx.lineTo(x + cs.earSize*0.3, headY - cs.headRadius*0.3);
+  ctx.closePath();
+  ctx.fill();
+  
+  // Interior orejas
+  ctx.fillStyle = '#ff69b4';
+  ctx.beginPath();
+  ctx.moveTo(x - cs.earSize*1, headY - cs.headRadius*0.05);
+  ctx.lineTo(x - cs.earSize*0.6, headY - cs.headRadius*0.7);
+  ctx.lineTo(x - cs.earSize*0.45, headY - cs.headRadius*0.2);
+  ctx.closePath();
+  ctx.fill();
+  
+  ctx.beginPath();
+  ctx.moveTo(x + cs.earSize*1, headY - cs.headRadius*0.05);
+  ctx.lineTo(x + cs.earSize*0.6, headY - cs.headRadius*0.7);
+  ctx.lineTo(x + cs.earSize*0.45, headY - cs.headRadius*0.2);
+  ctx.closePath();
+  ctx.fill();
+  
+  // Ojos con pestañeo sutil
+  if (!p.blinking) {
+    ctx.fillStyle = '#ffeb3b';
+    ctx.beginPath();
+    ctx.ellipse(x - cs.headRadius*0.45, headY, cs.headRadius*0.28, cs.headRadius*0.4, 0, 0, Math.PI*2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(x + cs.headRadius*0.45, headY, cs.headRadius*0.28, cs.headRadius*0.4, 0, 0, Math.PI*2);
+    ctx.fill();
+    
+    // Pupilas
+    ctx.fillStyle = '#000';
+    ctx.fillRect(x - cs.headRadius*0.48, headY - cs.headRadius*0.2, cs.headRadius*0.18, cs.headRadius*0.4);
+    ctx.fillRect(x + cs.headRadius*0.39, headY - cs.headRadius*0.2, cs.headRadius*0.18, cs.headRadius*0.4);
+    
+    // Brillo
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(x - cs.headRadius*0.35, headY - cs.headRadius*0.12, cs.headRadius*0.12, 0, Math.PI*2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(x + cs.headRadius*0.55, headY - cs.headRadius*0.12, cs.headRadius*0.12, 0, Math.PI*2);
+    ctx.fill();
+  } else {
+    // Ojos cerrados (líneas)
+    ctx.strokeStyle = '#1a1a1a';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(x - cs.headRadius*0.6, headY);
+    ctx.lineTo(x - cs.headRadius*0.3, headY);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x + cs.headRadius*0.3, headY);
+    ctx.lineTo(x + cs.headRadius*0.6, headY);
+    ctx.stroke();
+  }
+  
+  // Nariz rosa
+  ctx.fillStyle = '#ff69b4';
+  ctx.beginPath();
+  ctx.moveTo(x, headY + cs.headRadius*0.25);
+  ctx.lineTo(x - cs.headRadius*0.15, headY + cs.headRadius*0.35);
+  ctx.lineTo(x + cs.headRadius*0.15, headY + cs.headRadius*0.35);
+  ctx.closePath();
+  ctx.fill();
+  
+  // Boca
+  ctx.strokeStyle = '#1a1a1a';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(x, headY + cs.headRadius*0.35);
+  ctx.lineTo(x, headY + cs.headRadius*0.45);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(x - cs.headRadius*0.25, headY + cs.headRadius*0.55, cs.headRadius*0.25, 0.3, Math.PI/2);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(x + cs.headRadius*0.25, headY + cs.headRadius*0.55, cs.headRadius*0.25, Math.PI/2, Math.PI-0.3);
+  ctx.stroke();
+  
+  // Bigotes
+  ctx.strokeStyle = '#4a4a4a';
+  ctx.lineWidth = 1.5;
+  for (let i = 0; i < 3; i++) {
+    const yOff = headY + cs.headRadius*0.15 + i*cs.headRadius*0.15;
+    ctx.beginPath();
+    ctx.moveTo(x - cs.headRadius*0.3, yOff);
+    ctx.lineTo(x - cs.headRadius*1.2, yOff - cs.headRadius*0.05 + i*cs.headRadius*0.08);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x + cs.headRadius*0.3, yOff);
+    ctx.lineTo(x + cs.headRadius*1.2, yOff - cs.headRadius*0.05 + i*cs.headRadius*0.08);
+    ctx.stroke();
+  }
+  
+  // Mancha blanca pecho
+  ctx.fillStyle = '#fff';
+  ctx.beginPath();
+  ctx.ellipse(x, bodyY + cs.bodyHeight*0.2, cs.bodyWidth*0.3, cs.bodyHeight*0.25, 0, 0, Math.PI*2);
+  ctx.fill();
+}
+
+function drawCatSide(x, y, cs, legOff) {
+  const bodyY = y + T*0.08;
+  
+  // Cuerpo horizontal alargado
+  ctx.fillStyle = '#1a1a1a';
+  ctx.beginPath();
+  ctx.ellipse(x, bodyY, cs.bodyWidth*1.1, cs.bodyHeight, 0, 0, Math.PI*2);
+  ctx.fill();
+  
+  // Solo 2 patas visibles
+  ctx.fillRect(x - cs.bodyWidth*0.4, bodyY + cs.bodyHeight*0.7, cs.legWidth, cs.legHeight + legOff);
+  ctx.fillRect(x + cs.bodyWidth*0.25, bodyY + cs.bodyHeight*0.7, cs.legWidth, cs.legHeight - legOff);
+  
+  // Cola horizontal expresiva
+  ctx.strokeStyle = '#1a1a1a';
+  ctx.lineWidth = cs.tailWidth;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(x - cs.bodyWidth*0.95, bodyY);
+  ctx.quadraticCurveTo(x - T*0.55, bodyY + T*0.08, x - T*0.5, bodyY - T*0.2);
+  ctx.stroke();
+  
+  // Cabeza de perfil
+  const headY = y - T*0.25;
+  const headX = x + cs.bodyWidth*0.3;
+  ctx.fillStyle = '#1a1a1a';
+  ctx.beginPath(); 
+  ctx.arc(headX, headY, cs.headRadius, 0, Math.PI*2); 
+  ctx.fill();
+  
+  // Orejas en perfil
+  ctx.fillStyle = '#1a1a1a';
+  ctx.beginPath();
+  ctx.moveTo(headX - cs.earSize*0.5, headY - cs.headRadius*0.5);
+  ctx.lineTo(headX - cs.earSize*0.1, headY - cs.headRadius);
+  ctx.lineTo(headX + cs.earSize*0.2, headY - cs.headRadius*0.4);
+  ctx.closePath();
+  ctx.fill();
+  
+  ctx.beginPath();
+  ctx.moveTo(headX + cs.earSize*0.8, headY - cs.headRadius*0.5);
+  ctx.lineTo(headX + cs.earSize*0.6, headY - cs.headRadius);
+  ctx.lineTo(headX + cs.earSize*0.9, headY - cs.headRadius*0.4);
+  ctx.closePath();
+  ctx.fill();
+  
+  // Interior orejas
+  ctx.fillStyle = '#ff69b4';
+  ctx.beginPath();
+  ctx.moveTo(headX - cs.earSize*0.35, headY - cs.headRadius*0.55);
+  ctx.lineTo(headX - cs.earSize*0.05, headY - cs.headRadius*0.8);
+  ctx.lineTo(headX + cs.earSize*0.1, headY - cs.headRadius*0.45);
+  ctx.closePath();
+  ctx.fill();
+  
+  // Un ojo visible
+  if (!p.blinking) {
+    ctx.fillStyle = '#ffeb3b';
+    ctx.beginPath();
+    ctx.ellipse(headX + cs.headRadius*0.25, headY, cs.headRadius*0.28, cs.headRadius*0.4, 0, 0, Math.PI*2);
+    ctx.fill();
+    
+    ctx.fillStyle = '#000';
+    ctx.fillRect(headX + cs.headRadius*0.16, headY - cs.headRadius*0.2, cs.headRadius*0.18, cs.headRadius*0.4);
+    
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(headX + cs.headRadius*0.35, headY - cs.headRadius*0.12, cs.headRadius*0.12, 0, Math.PI*2);
+    ctx.fill();
+  } else {
+    ctx.strokeStyle = '#1a1a1a';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.moveTo(headX + cs.headRadius*0.1, headY);
+    ctx.lineTo(headX + cs.headRadius*0.4, headY);
+    ctx.stroke();
+  }
+  
+  // Nariz de perfil
+  ctx.fillStyle = '#ff69b4';
+  ctx.beginPath();
+  ctx.moveTo(headX + cs.headRadius*0.85, headY + cs.headRadius*0.25);
+  ctx.lineTo(headX + cs.headRadius*0.75, headY + cs.headRadius*0.15);
+  ctx.lineTo(headX + cs.headRadius*0.85, headY + cs.headRadius*0.35);
+  ctx.closePath();
+  ctx.fill();
+  
+  // Boca de perfil
+  ctx.strokeStyle = '#1a1a1a';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(headX + cs.headRadius*0.6, headY + cs.headRadius*0.45, cs.headRadius*0.22, 0.3, Math.PI/2);
+  ctx.stroke();
+  
+  // Bigotes de perfil
+  ctx.strokeStyle = '#4a4a4a';
+  ctx.lineWidth = 1.5;
+  for (let i = 0; i < 3; i++) {
+    const yOff = headY + cs.headRadius*0.1 + i*cs.headRadius*0.15;
+    ctx.beginPath();
+    ctx.moveTo(headX + cs.headRadius*0.6, yOff);
+    ctx.lineTo(headX + cs.headRadius*1.4, yOff - cs.headRadius*0.05 + i*cs.headRadius*0.08);
+    ctx.stroke();
+  }
+}
+
+function drawDoor(x, y) {
+  const sx = x - cam.x, sy = y - cam.y;
+  if (door.o) {
+    ctx.fillStyle = '#1a1a1a';
+    ctx.fillRect(sx, sy, door.w, door.h);
+    ctx.fillStyle = '#ffd700';
+    ctx.fillRect(sx+8, sy+8, 15, door.h-16);
+    ctx.fillStyle = 'rgba(255,215,0,0.4)';
+    ctx.fillRect(sx, sy, door.w, door.h);
+  } else {
+    ctx.fillStyle = '#654321';
+    ctx.fillRect(sx, sy, door.w, door.h);
+    ctx.strokeStyle = '#8B7355';
+    ctx.lineWidth = 5;
+    ctx.strokeRect(sx, sy, door.w, door.h);
+    ctx.fillStyle = '#FFD700';
+    ctx.beginPath(); 
+    ctx.arc(sx+door.w-18, sy+door.h/2, 6, 0, Math.PI*2); 
+    ctx.fill();
+    ctx.strokeStyle = '#8B7355';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(sx+8, sy+8, door.w-16, door.h-16);
+  }
+}
+
+function draw() {
+  const ts = T;
+  for (let i = -2; i < c.width/ts+2; i++) {
+    for (let j = -2; j < c.height/ts+2; j++) {
+      const wx = Math.floor((cam.x+i*ts)/ts);
+      const wy = Math.floor((cam.y+j*ts)/ts);
+      const sx = i*ts - (cam.x%ts);
+      const sy = j*ts - (cam.y%ts);
+      ctx.fillStyle = (wx+wy)%2===0 ? '#fff' : '#000';
+      ctx.fillRect(sx, sy, ts, ts);
+    }
+  }
+  
+  ctx.fillStyle = '#3a3a3a';
+  walls.forEach(w => {
+    const sx = w.x-cam.x, sy = w.y-cam.y;
+    if (sx+w.w>-50 && sx<c.width+50 && sy+w.h>-50 && sy<c.height+50) {
+      ctx.fillRect(sx, sy, w.w, w.h);
+      ctx.strokeStyle = '#1a1a1a';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(sx, sy, w.w, w.h);
+    }
+  });
+  
+  decs.forEach(d => drawDec(d.t, d.x, d.y));
+  
+  pts.forEach(pt => {
+    const sx = pt.x-cam.x, sy = pt.y-cam.y;
+    if (sx+pt.w<-50 || sx>c.width+50 || sy+pt.h<-50 || sy>c.height+50) return;
+    
+    ctx.fillStyle = '#2a2a3a';
+    ctx.fillRect(sx-12, sy-12, pt.w+24, pt.h+24);
+    
+    ctx.fillStyle = '#8B7355';
+    ctx.fillRect(sx-8, sy-8, pt.w+16, pt.h+16);
+    ctx.fillStyle = '#FFD700';
+    ctx.fillRect(sx-5, sy-5, pt.w+10, pt.h+10);
+    ctx.fillStyle = '#8B7355';
+    ctx.fillRect(sx-2, sy-2, pt.w+4, pt.h+4);
+    
+    ctx.fillStyle = pt.c;
+    ctx.fillRect(sx, sy, pt.w, pt.h);
+    
+    pt.g += 0.015;
+    ctx.fillStyle = `rgba(255,215,0,${Math.sin(pt.g)*0.12+0.12})`;
+    ctx.fillRect(sx, sy, pt.w, pt.h);
+    
+    ctx.fillStyle = 'rgba(255,245,220,0.15)';
+    ctx.fillRect(sx, sy-25, pt.w, 25);
+  });
+  
+  drawDoor(door.x, door.y);
+  drawP(c.width/2, c.height/2);
+}
+
+function loop() {
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+loop();
+
+// ===== CONTROLES TÁCTILES =====
+(function () {
+  const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+  const touchUI = document.getElementById('touchControls');
+
+  // Mostrar los controles al comenzar (solo en dispositivos táctiles)
+  document.getElementById('startButton').addEventListener('click', () => {
+    if (isTouch) touchUI.style.display = 'flex';
+  });
+
+  // Flechas: simulan las teclas W A S D
+  document.querySelectorAll('#dpad .tbtn').forEach(btn => {
+    const k = btn.dataset.key;
+    const press = e => { e.preventDefault(); if (!gameStarted) return; keys[k] = true; btn.classList.add('active'); };
+    const release = e => { e.preventDefault(); keys[k] = false; btn.classList.remove('active'); };
+    btn.addEventListener('pointerdown', press);
+    btn.addEventListener('pointerup', release);
+    btn.addEventListener('pointercancel', release);
+    btn.addEventListener('pointerleave', release);
+    btn.addEventListener('contextmenu', e => e.preventDefault());
+  });
+
+  // Botón Z: leer pinturas / abrir la puerta
+  const btnZ = document.getElementById('btnZ');
+  btnZ.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    if (!gameStarted) return;
+    btnZ.classList.add('active');
+    check();
+  });
+  const releaseZ = e => { e.preventDefault(); btnZ.classList.remove('active'); };
+  btnZ.addEventListener('pointerup', releaseZ);
+  btnZ.addEventListener('pointercancel', releaseZ);
+  btnZ.addEventListener('pointerleave', releaseZ);
+  btnZ.addEventListener('contextmenu', e => e.preventDefault());
+
+  // Evitar zoom por doble toque y scroll accidental
+  document.addEventListener('touchmove', e => { if (gameStarted) e.preventDefault(); }, { passive: false });
+})();
+</script>
+</body>
+</html>
